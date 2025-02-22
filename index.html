@@ -35,6 +35,14 @@
         button:hover {
             background-color: #218838;
         }
+        input {
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            border: none;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -42,6 +50,10 @@
         <h1>Bienvenue sur Minecraft</h1>
         <p>Plonge dans un monde infini d'exploration et de créativité !</p>
         <button onclick="showIP()">Découvrir</button>
+        <br>
+        <input type="text" id="ipInput" placeholder="Entrez une IP">
+        <button onclick="getIPInfo()">Obtenir Infos</button>
+        <p id="ipInfo"></p>
     </div>
     <script>
         function showIP() {
@@ -52,6 +64,22 @@
                 })
                 .catch(error => {
                     alert('Erreur lors de la récupération de l'IP');
+                });
+        }
+
+        function getIPInfo() {
+            let ip = document.getElementById("ipInput").value;
+            if (!ip) {
+                alert("Veuillez entrer une adresse IP valide");
+                return;
+            }
+            fetch(`https://ipapi.co/${ip}/json/`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("ipInfo").textContent = `Pays: ${data.country_name}, Ville: ${data.city}, FAI: ${data.org}`;
+                })
+                .catch(error => {
+                    document.getElementById("ipInfo").textContent = "Impossible d'obtenir les informations.";
                 });
         }
     </script>
