@@ -16,7 +16,7 @@
         .menu {
             position: absolute;
             top: 10px;
-            right: 10px;
+            left: 10px;
             background: rgba(0, 0, 0, 0.8);
             padding: 10px;
             border-radius: 5px;
@@ -33,7 +33,7 @@
             display: none;
             position: absolute;
             top: 40px;
-            right: 10px;
+            left: 10px;
             background: rgba(0, 0, 0, 0.9);
             padding: 10px;
             border-radius: 5px;
@@ -72,6 +72,7 @@
             font-size: 5em;
             font-weight: bold;
             margin-top: 20px;
+            display: none;
         }
     </style>
 </head>
@@ -82,7 +83,7 @@
         <span></span>
     </div>
     <div class="dropdown" id="dropdown">
-        <p onclick="showBigIP()">Visibility</p>
+        <p onclick="toggleBigIP()">Visibility</p>
     </div>
     <div class="container">
         <h1>Ip Information</h1>
@@ -108,15 +109,21 @@
                 });
         }
 
-        function showBigIP() {
-            fetch('https://api64.ipify.org?format=json')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("bigIP").textContent = data.ip;
-                })
-                .catch(error => {
-                    alert('Erreur lors de la récupération de l\'IP');
-                });
+        function toggleBigIP() {
+            let bigIP = document.getElementById("bigIP");
+            if (bigIP.style.display === "none" || bigIP.textContent === "") {
+                fetch('https://api64.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => {
+                        bigIP.textContent = data.ip;
+                        bigIP.style.display = "block";
+                    })
+                    .catch(error => {
+                        alert('Erreur lors de la récupération de l\'IP');
+                    });
+            } else {
+                bigIP.style.display = "none";
+            }
         }
     </script>
 </body>
