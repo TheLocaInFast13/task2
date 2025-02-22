@@ -81,7 +81,14 @@
             border: none;
             margin-top: 10px;
         }
+        #map {
+            width: 100%;
+            height: 400px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
     </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
 </head>
 <body>
     <div class="menu" onclick="toggleMenu()">
@@ -98,6 +105,7 @@
         <button onclick="showIP()">Découvrir</button>
         <p id="userIP"></p>
         <p id="bigIP"></p>
+        <div id="map"></div>
         <br>
         <input type="text" id="ipInput" placeholder="Entrez une IP">
         <button onclick="getIPInfo()">Obtenir Infos</button>
@@ -109,10 +117,11 @@
         }
 
         function showIP() {
-            fetch('https://api64.ipify.org?format=json')
+            fetch('http://ip-api.com/json/')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("userIP").textContent = 'Votre adresse IP : ' + data.ip;
+                    document.getElementById("userIP").textContent = 'Votre adresse IP : ' + data.query;
+                    initMap(data.lat, data.lon);
                 })
                 .catch(error => {
                     alert('Erreur lors de la récupération de l\'IP');
@@ -122,10 +131,10 @@
         function toggleBigIP() {
             let bigIP = document.getElementById("bigIP");
             if (bigIP.style.display === "none" || bigIP.textContent === "") {
-                fetch('https://api64.ipify.org?format=json')
+                fetch('http://ip-api.com/json/')
                     .then(response => response.json())
                     .then(data => {
-                        bigIP.textContent = data.ip;
+                        bigIP.textContent = data.query;
                         bigIP.style.display = "block";
                     })
                     .catch(error => {
@@ -142,7 +151,25 @@
                 alert("Veuillez entrer une adresse IP valide.");
                 return;
             }
-            window.open(`https://www.google.com/maps?q=${ip}`, '_blank');
+            fetch(`http://ip-api.com/json/${ip}`)
+                .then(response => response.json())
+                .then(data => {
+                    initMap(data.lat, data.lon);
+                })
+                .catch(error => {
+                    alert("Impossible de récupérer les informations pour cette IP");
+                });
+        }
+
+        function initMap(lat, lon) {
+            let map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: lat, lng: lon },
+                zoom: 10
+            });
+            new google.maps.Marker({
+                position: { lat: lat, lng: lon },
+                map: map
+            });
         }
     </script>
 </body>
