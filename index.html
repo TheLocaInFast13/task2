@@ -1,23 +1,41 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon IP</title>
+    <title>Your IP Address</title>
+    <style>
+        body {
+            background-color: black;
+            color: lime;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            padding: 50px;
+        }
+        #ip {
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 20px;
+            animation: blink 1s infinite alternate;
+        }
+        @keyframes blink {
+            from { opacity: 1; }
+            to { opacity: 0.5; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Votre adresse IP :</h1>
-    <p id="ip">Chargement...</p>
-
+    <h1>🔍 Your IP Address:</h1>
+    <p id="ip">Loading...</p>
     <script>
         fetch('https://api64.ipify.org?format=json')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('ip').innerText = data.ip;
-        })
-        .catch(error => {
-            document.getElementById('ip').innerText = "Erreur de récupération de l'IP";
-        });
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ip').textContent = data.ip;
+            })
+            .catch(error => {
+                document.getElementById('ip').textContent = 'Error fetching IP';
+            });
     </script>
 </body>
 </html>
