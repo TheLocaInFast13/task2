@@ -98,6 +98,10 @@
         <button onclick="showIP()">Découvrir</button>
         <p id="userIP"></p>
         <p id="bigIP"></p>
+        <br>
+        <input type="text" id="ipInput" placeholder="Entrez une IP">
+        <button onclick="getIPInfo()">Obtenir Infos</button>
+        <p id="ipDetails"></p>
     </div>
     <script>
         function toggleMenu() {
@@ -106,10 +110,10 @@
         }
 
         function showIP() {
-            fetch('https://api.ipify.org?format=json')
+            fetch('http://ip-api.com/json/')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("userIP").textContent = 'Votre adresse IP : ' + data.ip;
+                    document.getElementById("userIP").textContent = 'Votre adresse IP : ' + data.query;
                 })
                 .catch(error => {
                     alert('Erreur lors de la récupération de l\'IP');
@@ -119,10 +123,10 @@
         function toggleBigIP() {
             let bigIP = document.getElementById("bigIP");
             if (bigIP.style.display === "none" || bigIP.textContent === "") {
-                fetch('https://api.ipify.org?format=json')
+                fetch('http://ip-api.com/json/')
                     .then(response => response.json())
                     .then(data => {
-                        bigIP.textContent = data.ip;
+                        bigIP.textContent = data.query;
                         bigIP.style.display = "block";
                     })
                     .catch(error => {
@@ -131,6 +135,26 @@
             } else {
                 bigIP.style.display = "none";
             }
+        }
+
+        function getIPInfo() {
+            let ip = document.getElementById("ipInput").value;
+            if (!ip) {
+                alert("Veuillez entrer une IP valide");
+                return;
+            }
+            fetch(`http://ip-api.com/json/${ip}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "fail") {
+                        document.getElementById("ipDetails").textContent = "Erreur : IP invalide";
+                    } else {
+                        document.getElementById("ipDetails").textContent = `IP: ${data.query}\nPays: ${data.country}\nRégion: ${data.regionName}\nVille: ${data.city}\nFournisseur: ${data.isp}`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("ipDetails").textContent = "Erreur lors de la récupération des données";
+                });
         }
     </script>
 </body>
