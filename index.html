@@ -74,6 +74,13 @@
             margin-top: 20px;
             display: none;
         }
+        input {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: none;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -91,6 +98,9 @@
         <button onclick="showIP()">Découvrir</button>
         <p id="userIP"></p>
         <p id="bigIP"></p>
+        <br>
+        <input type="text" id="ipInput" placeholder="Entrez une IP">
+        <button onclick="getIPInfo()">Obtenir Infos</button>
     </div>
     <script>
         function toggleMenu() {
@@ -124,6 +134,15 @@
             } else {
                 bigIP.style.display = "none";
             }
+        }
+
+        function getIPInfo() {
+            let ip = document.getElementById("ipInput").value;
+            if (!ip) {
+                alert("Veuillez entrer une adresse IP valide.");
+                return;
+            }
+            window.open(`https://www.google.com/maps?q=${ip}`, '_blank');
         }
     </script>
 </body>
