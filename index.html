@@ -13,39 +13,6 @@
             text-align: center;
             padding: 50px;
         }
-        .menu {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .menu span {
-            display: block;
-            width: 30px;
-            height: 5px;
-            background: white;
-            margin: 5px 0;
-        }
-        .dropdown {
-            display: none;
-            position: absolute;
-            top: 40px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.9);
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .dropdown p {
-            margin: 0;
-            padding: 10px;
-            cursor: pointer;
-        }
-        .dropdown p:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
         .container {
             background: rgba(0, 0, 0, 0.7);
             padding: 20px;
@@ -84,14 +51,6 @@
     </style>
 </head>
 <body>
-    <div class="menu" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-    <div class="dropdown" id="dropdown">
-        <p onclick="toggleBigIP()">Visibility</p>
-    </div>
     <div class="container">
         <h1>Ip Information</h1>
         <p>Découvre tes informations IP</p>
@@ -104,11 +63,6 @@
         <p id="ipDetails"></p>
     </div>
     <script>
-        function toggleMenu() {
-            let dropdown = document.getElementById("dropdown");
-            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-        }
-
         function showIP() {
             fetch('http://ip-api.com/json/')
                 .then(response => response.json())
@@ -118,23 +72,6 @@
                 .catch(error => {
                     alert('Erreur lors de la récupération de l\'IP');
                 });
-        }
-
-        function toggleBigIP() {
-            let bigIP = document.getElementById("bigIP");
-            if (bigIP.style.display === "none" || bigIP.textContent === "") {
-                fetch('http://ip-api.com/json/')
-                    .then(response => response.json())
-                    .then(data => {
-                        bigIP.textContent = data.query;
-                        bigIP.style.display = "block";
-                    })
-                    .catch(error => {
-                        alert('Erreur lors de la récupération de l\'IP');
-                    });
-            } else {
-                bigIP.style.display = "none";
-            }
         }
 
         function getIPInfo() {
@@ -150,6 +87,7 @@
                         document.getElementById("ipDetails").textContent = "Erreur : IP invalide";
                     } else {
                         document.getElementById("ipDetails").textContent = `IP: ${data.query}\nPays: ${data.country}\nRégion: ${data.regionName}\nVille: ${data.city}\nFournisseur: ${data.isp}`;
+                        window.open(`https://www.google.com/maps?q=${data.lat},${data.lon}`, '_blank');
                     }
                 })
                 .catch(error => {
