@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head link rel="icon" type="image/png" href="https://static.vecteezy.com/system/resources/previews/025/463/773/non_2x/hacker-logo-design-a-mysterious-and-dangerous-hacker-illustration-vector.jpg">
-
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Découvrir Minecraft</title>
@@ -99,9 +98,6 @@
         <button onclick="showIP()">Découvrir</button>
         <p id="userIP"></p>
         <p id="bigIP"></p>
-        <br>
-        <input type="text" id="ipInput" placeholder="Entrez une IP">
-        <button onclick="getIPInfo()">Obtenir Infos</button>
     </div>
     <script>
         function toggleMenu() {
@@ -110,10 +106,10 @@
         }
 
         function showIP() {
-            fetch('http://ip-api.com/json/')
+            fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("userIP").textContent = 'Votre adresse IP : ' + data.query;
+                    document.getElementById("userIP").textContent = 'Votre adresse IP : ' + data.ip;
                 })
                 .catch(error => {
                     alert('Erreur lors de la récupération de l\'IP');
@@ -123,10 +119,10 @@
         function toggleBigIP() {
             let bigIP = document.getElementById("bigIP");
             if (bigIP.style.display === "none" || bigIP.textContent === "") {
-                fetch('http://ip-api.com/json/')
+                fetch('https://api.ipify.org?format=json')
                     .then(response => response.json())
                     .then(data => {
-                        bigIP.textContent = data.query;
+                        bigIP.textContent = data.ip;
                         bigIP.style.display = "block";
                     })
                     .catch(error => {
@@ -135,22 +131,6 @@
             } else {
                 bigIP.style.display = "none";
             }
-        }
-
-        function getIPInfo() {
-            let ip = document.getElementById("ipInput").value;
-            if (!ip) {
-                alert("Veuillez entrer une adresse IP valide.");
-                return;
-            }
-            fetch(`http://ip-api.com/json/${ip}`)
-                .then(response => response.json())
-                .then(data => {
-                    alert(`Informations sur l'IP :\nPays: ${data.country}\nRégion: ${data.regionName}\nVille: ${data.city}`);
-                })
-                .catch(error => {
-                    alert("Impossible de récupérer les informations pour cette IP");
-                });
         }
     </script>
 </body>
