@@ -13,6 +13,39 @@
             text-align: center;
             padding: 50px;
         }
+        .menu {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .menu span {
+            display: block;
+            width: 30px;
+            height: 5px;
+            background: white;
+            margin: 5px 0;
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .dropdown p {
+            margin: 0;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .dropdown p:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
         .container {
             background: rgba(0, 0, 0, 0.7);
             padding: 20px;
@@ -35,68 +68,55 @@
         button:hover {
             background-color: #218838;
         }
-        input {
-            padding: 10px;
-            margin-top: 20px;
-            font-size: 1.2em;
-            border-radius: 5px;
-            border: none;
-            text-align: center;
-        }
-        #map {
-            width: 100%;
-            height: 400px;
+        #bigIP {
+            font-size: 5em;
+            font-weight: bold;
             margin-top: 20px;
         }
     </style>
 </head>
 <body>
+    <div class="menu" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="dropdown" id="dropdown">
+        <p onclick="showBigIP()">Visibility</p>
+    </div>
     <div class="container">
         <h1>Ip Information</h1>
         <p>Découvre tes informations IP</p>
         <button onclick="showIP()">Découvrir</button>
         <p id="userIP"></p>
-        <br>
-        <input type="text" id="ipInput" placeholder="Entrez une IP">
-        <button onclick="getIPInfo()">Obtenir Infos</button>
-        <p id="ipInfo"></p>
-        <div id="map"></div>
+        <p id="bigIP"></p>
     </div>
     <script>
+        function toggleMenu() {
+            let dropdown = document.getElementById("dropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
         function showIP() {
             fetch('https://api64.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById("userIP").textContent = 'Votre adresse IP : ' + data.ip;
-                    getIPInfo(data.ip);
                 })
                 .catch(error => {
                     alert('Erreur lors de la récupération de l\'IP');
                 });
         }
 
-        function getIPInfo(ip = null) {
-            let inputIp = ip || document.getElementById("ipInput").value;
-            if (!inputIp) {
-                alert("Veuillez entrer une adresse IP valide");
-                return;
-            }
-            fetch(`https://ipapi.co/${inputIp}/json/`)
+        function showBigIP() {
+            fetch('https://api64.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("ipInfo").textContent = `Pays: ${data.country_name}, Ville: ${data.city}, FAI: ${data.org}`;
-                    if (data.latitude && data.longitude) {
-                        showMap(data.latitude, data.longitude);
-                    }
+                    document.getElementById("bigIP").textContent = data.ip;
                 })
                 .catch(error => {
-                    document.getElementById("ipInfo").textContent = "Impossible d'obtenir les informations.";
+                    alert('Erreur lors de la récupération de l\'IP');
                 });
-        }
-
-        function showMap(lat, lon) {
-            document.getElementById("map").innerHTML = `<iframe width="100%" height="400" frameborder="0" style="border:0" 
-                src="https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=${lat},${lon}" allowfullscreen></iframe>`;
         }
     </script>
 </body>
