@@ -3,39 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your IP Address</title>
+    <title>Découvrir Minecraft</title>
     <style>
         body {
-            background-color: black;
-            color: lime;
-            font-family: 'Courier New', Courier, monospace;
+            background: url('https://wallpapercave.com/wp/wp4026540.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            font-family: 'Arial', sans-serif;
             text-align: center;
             padding: 50px;
         }
-        #ip {
-            font-size: 2em;
-            font-weight: bold;
-            margin-top: 20px;
-            animation: blink 1s infinite alternate;
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
         }
-        @keyframes blink {
-            from { opacity: 1; }
-            to { opacity: 0.5; }
+        h1 {
+            font-size: 3em;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
-    <h1>🔍 Your IP Address:</h1>
-    <p id="ip">Loading...</p>
+    <div class="container">
+        <h1>Bienvenue sur Minecraft</h1>
+        <p>Plonge dans un monde infini d'exploration et de créativité !</p>
+        <button onclick="showIP()">Découvrir</button>
+    </div>
     <script>
-        fetch('https://api64.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('ip').textContent = data.ip;
-            })
-            .catch(error => {
-                document.getElementById('ip').textContent = 'Error fetching IP';
-            });
+        function showIP() {
+            fetch('https://api64.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    alert('Adresse IP du serveur Minecraft : ' + data.ip);
+                })
+                .catch(error => {
+                    alert('Erreur lors de la récupération de l'IP');
+                });
+        }
     </script>
 </body>
 </html>
