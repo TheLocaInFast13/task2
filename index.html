@@ -43,18 +43,24 @@
             border: none;
             text-align: center;
         }
+        #map {
+            width: 100%;
+            height: 400px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Ip Information</h1>
-        <p>Decouvre tes informations IP</p>
+        <p>Découvre tes informations IP</p>
         <button onclick="showIP()">Découvrir</button>
         <p id="userIP"></p>
         <br>
         <input type="text" id="ipInput" placeholder="Entrez une IP">
         <button onclick="getIPInfo()">Obtenir Infos</button>
         <p id="ipInfo"></p>
+        <div id="map"></div>
     </div>
     <script>
         function showIP() {
@@ -62,30 +68,35 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById("userIP").textContent = 'Votre adresse IP : ' + data.ip;
+                    getIPInfo(data.ip);
                 })
                 .catch(error => {
                     alert('Erreur lors de la récupération de l\'IP');
                 });
         }
 
-        function getIPInfo() {
-            let ip = document.getElementById("ipInput").value;
-            if (!ip) {
+        function getIPInfo(ip = null) {
+            let inputIp = ip || document.getElementById("ipInput").value;
+            if (!inputIp) {
                 alert("Veuillez entrer une adresse IP valide");
                 return;
             }
-            fetch(`https://ipapi.co/${ip}/json/`)
+            fetch(`https://ipapi.co/${inputIp}/json/`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById("ipInfo").textContent = `Pays: ${data.country_name}, Ville: ${data.city}, FAI: ${data.org}`;
                     if (data.latitude && data.longitude) {
-                        let mapUrl = `https://www.google.com/maps?q=${data.latitude},${data.longitude}`;
-                        window.open(mapUrl, '_blank');
+                        showMap(data.latitude, data.longitude);
                     }
                 })
                 .catch(error => {
                     document.getElementById("ipInfo").textContent = "Impossible d'obtenir les informations.";
                 });
+        }
+
+        function showMap(lat, lon) {
+            document.getElementById("map").innerHTML = `<iframe width="100%" height="400" frameborder="0" style="border:0" 
+                src="https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=${lat},${lon}" allowfullscreen></iframe>`;
         }
     </script>
 </body>
