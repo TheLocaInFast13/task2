@@ -50,6 +50,7 @@
         <h1>Bienvenue sur Minecraft</h1>
         <p>Plonge dans un monde infini d'exploration et de créativité !</p>
         <button onclick="showIP()">Découvrir</button>
+        <p id="userIP"></p>
         <br>
         <input type="text" id="ipInput" placeholder="Entrez une IP">
         <button onclick="getIPInfo()">Obtenir Infos</button>
@@ -60,10 +61,10 @@
             fetch('https://api64.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
-                    alert('Adresse IP du serveur Minecraft : ' + data.ip);
+                    document.getElementById("userIP").textContent = 'Votre adresse IP : ' + data.ip;
                 })
                 .catch(error => {
-                    alert('Erreur lors de la récupération de l'IP');
+                    alert('Erreur lors de la récupération de l\'IP');
                 });
         }
 
