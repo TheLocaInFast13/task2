@@ -47,8 +47,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>Ip information</h1>
-        <p>Avec ce site decouvrez votre ip !</p>
+        <h1>Ip Information</h1>
+        <p>Decouvre tes informations IP</p>
         <button onclick="showIP()">Découvrir</button>
         <p id="userIP"></p>
         <br>
@@ -78,6 +78,10 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById("ipInfo").textContent = `Pays: ${data.country_name}, Ville: ${data.city}, FAI: ${data.org}`;
+                    if (data.latitude && data.longitude) {
+                        let mapUrl = `https://www.google.com/maps?q=${data.latitude},${data.longitude}`;
+                        window.open(mapUrl, '_blank');
+                    }
                 })
                 .catch(error => {
                     document.getElementById("ipInfo").textContent = "Impossible d'obtenir les informations.";
