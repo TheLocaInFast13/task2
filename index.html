@@ -1,67 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Découvrir Minecraft</title>
+    <title>Malédiction de Disparition - Minecraft Wiki</title>
     <style>
         body {
-            background: url('https://static.vecteezy.com/system/resources/previews/025/463/773/non_2x/hacker-logo-design-a-mysterious-and-dangerous-hacker-illustration-vector.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
             text-align: center;
-            padding: 50px;
+        }
+        .menu {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            background: none;
+            border: none;
+        }
+        .menu-content {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            background: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .menu-content a {
+            display: block;
+            text-decoration: none;
+            color: black;
+            padding: 5px;
+        }
+        .menu-content a:hover {
+            background: #ddd;
         }
         .container {
-            background: rgba(0, 0, 0, 0.7);
+            max-width: 800px;
+            background: white;
             padding: 20px;
             border-radius: 10px;
-            display: inline-block;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: auto;
+            margin-top: 50px;
         }
         h1 {
-            font-size: 3em;
+            color: darkred;
         }
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.5em;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 20px;
+        img {
+            width: 150px;
         }
-        button:hover {
-            background-color: #218838;
-        }
-        #bigIP {
-            font-size: 5em;
-            font-weight: bold;
-            margin-top: 20px;
-            display: none;
+        .info {
+            text-align: left;
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Ip Information</h1>
-        <p>Découvre tes informations IP</p>
-        <button onclick="showIP()">Découvrir</button>
-        <p id="userIP"></p>
-        <p id="bigIP"></p>
-    </div>
     <script>
-        function showIP() {
-            fetch('http://ip-api.com/json/')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("userIP").textContent = 'Votre adresse IP : ' + data.query;
-                })
-                .catch(error => {
-                    alert('Erreur lors de la récupération de l\'IP');
-                });
+        function toggleMenu() {
+            var menu = document.getElementById("menu-content");
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
         }
     </script>
+</head>
+<body>
+    <button class="menu" onclick="toggleMenu()">☰</button>
+    <div class="menu-content" id="menu-content">
+        <a href="#">Wiki Minecraft</a>
+    </div>
+    <div class="container">
+        <h1>Malédiction de Disparition</h1>
+        <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/7/72/Enchanted_Book_JE3_BE2.png" alt="Livre Enchanté">
+        <p><strong>Type :</strong> Enchantement Maudit</p>
+        <p><strong>Disponibilité :</strong> Rare (portails du Nether)</p>
+        <p><strong>Effet :</strong> Fait disparaître le joueur lorsqu'il meurt avec un objet maudit.</p>
+        <h2>Obtention</h2>
+        <p>Ce livre enchanté est parfois trouvé dans des <strong>coffres de portails ruinés</strong> dans le Nether.</p>
+        <h2>Effets</h2>
+        <ul class="info">
+            <li>Lorsque le joueur meurt en portant un objet avec cet enchantement, son corps <strong>disparaît instantanément</strong>.</li>
+            <li>Les autres joueurs ne peuvent pas voir son loot ni le récupérer.</li>
+            <li>Effet irréversible, même après réapparition.</li>
+        </ul>
+        <h2>Trivia</h2>
+        <p>Certains joueurs pensent que cet enchantement est une relique du Nether, utilisée autrefois par les Piglins pour emprisonner les âmes.</p>
+    </div>
 </body>
 </html>
